@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-
+#include <stdlib.h>
 unsigned char SBox[16][16] = {
     {0x63,0x7C,0x77,0x7B,0xF2,0x6B,0x6F,0xC5,0x30,0x01,0x67,0x2B,0xFE,0xD7,0xAB,0x76},
     {0xCA,0x82,0xC9,0x7D,0xFA,0x59,0x47,0xF0,0xAD,0xD4,0xA2,0xAF,0x9C,0xA4,0x72,0xC0},
@@ -21,35 +21,52 @@ unsigned char SBox[16][16] = {
 };
 
 int main() {
-    char mensaje[8][8];
+    char mensaje[4][4];
+for ( int i = 0; i < 4; i++)
+{
+    for (int j = 0; j < 4; j++)
+    {
+        mensaje[i][j]= j;
+    }
+}
 
-    printf("Mensaje: ");
+    printf("Mensaje:\n");
 
     /*Aqui va el fgets para recibir el mensaje y lo guarda en mensaje */
-    fgets(mensaje[0], sizeof(mensaje[0]), stdin);
+    // fgets(mensaje[0], sizeof(mensaje[0]), stdin);
 
     /*Aqui solo se guarda el valor con el que cierra un arreglo*/
-    mensaje[0][strcspn(mensaje[0], "\n")] = '\0';
+    // mensaje[0][strcspn(mensaje[0], "\n")] = '\0';
+    // printf("%i\n" ,strcspn(mensaje[0], "a"));
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j<4 ; j++){
+            printf("%02X ", mensaje[i][j]);
+        }
+        printf("\n");
+    }
 
-        /*Aqui se imprime en hex para valorar visualmente si corresponde con la sbox*/
-    printf("Hexadecimal:");
 
     /*Aqui recicle el ciclo for que use para transformar el texto a hexa y tambien encuentra el \0 para evitar el enter */
-    for (int i = 0; mensaje[0][i] != '\0'; i++) {
-        printf("%02X ", (unsigned char)mensaje[0][i]);
+    // for (int i = 0; mensaje[0][i] != '\0'; i++) {
+        // printf("%02X ", (unsigned char)mensaje[0][i]);
+    // }
+    printf("SubBytes:\n");    
+    for (int i = 0; i < 4; i++) {
+        for ( int j = 0; j < 4; j++)
+        {
+            unsigned char valor = (unsigned char)mensaje[i][j];
+            int fila = valor >> 4;
+            int columna = valor & 0x0F;
+            // printf("%02X ", SBox[fila][columna]);
+            mensaje [i][j] = SBox[fila][columna];
+        }
     }
-
-    printf("SubBytes:");
-
-    for (int i = 0; mensaje[0][i] != '\0'; i++) {
-        unsigned char valor = (unsigned char)mensaje[0][i];
-
-        int fila = valor >> 4;
-        int columna = valor & 0x0F;
-
-        printf("%02X ", SBox[fila][columna]);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j<4 ; j++){
+            printf("%02X ", mensaje[i][j]);
+        }
+        printf("\n");
     }
-
     
 
 

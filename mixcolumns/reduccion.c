@@ -2,8 +2,9 @@
 #include <string.h>
 // unsigned char reduc(unsigned char mensaje [15]);
 
-int matriz [15][15];
 char mensaje [16]= {0,1,1,0,0,1,1,0,1,1,0,1,1,0,1,0};  
+// char mensaje [16]= {1,1,0,1,1,0,0,1,0,1,0,1,1,1,0,1};  
+
 int main (){
  char x0 = mensaje[0] ^ mensaje[9] ^ mensaje[15] ^ mensaje[13] ^ mensaje[12];
  char x1 = mensaje[1] ^ mensaje[9] ^ mensaje[8] ^ mensaje[15] ^ mensaje[14]^ mensaje[13]^ mensaje[13]^ mensaje[12];

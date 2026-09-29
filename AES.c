@@ -19,36 +19,59 @@ unsigned char SBox[16][16] = {
     {0xE1,0xF8,0x98,0x11,0x69,0xD9,0x8E,0x94,0x9B,0x1E,0x87,0xE9,0xCE,0x55,0x28,0xDF},
     {0x8C,0xA1,0x89,0x0D,0xBF,0xE6,0x42,0x68,0x41,0x99,0x2D,0x0F,0xB0,0x54,0xBB,0x16}
 };
-
-int main() {
-    char mensaje[4][4];
-for ( int i = 0; i < 4; i++)
-{
-    for (int j = 0; j < 4; j++)
-    {
-        mensaje[i][j]= j;
+void addRoundKey(unsigned char estado[4][4], unsigned char key_init[4][4]) {
+    unsigned char resultado[4][4];
+    for(int i=0; i<4; i++){
+        for(int j=0; j<4; j++){
+            resultado[i][j] = estado[i][j] ^ key_init[i][j];
+        }
+    }
+    for(int i=0; i<4; i++){
+        for(int j=0; j<4; j++){
+            estado[i][j] = resultado[i][j];
+        }
     }
 }
-    printf("Mensaje:\n");
+void subBytes(unsigned char estado[4][4]) {
     for (int i = 0; i < 4; i++) {
-        for (int j = 0; j<4 ; j++){
-            printf("%02X ", mensaje[i][j]);
-        }
-        printf("\n");
-    }
-    printf("SubBytes:\n");    
-    for (int i = 0; i < 4; i++) {
-        for ( int j = 0; j < 4; j++)
-        {
-            unsigned char valor = (unsigned char)mensaje[i][j];
+        for (int j = 0; j < 4; j++) {
+            unsigned char valor = (unsigned char)estado[i][j];
             int fila = valor >> 4;
             int columna = valor & 0x0F;
-            mensaje [i][j] = SBox[fila][columna];
+            estado[i][j] = SBox[fila][columna];
         }
     }
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j<4 ; j++){
-            printf("%02X ", mensaje[i][j]);
+}
+void shiftRows(unsigned char estado[4][4]) {
+    unsigned char temp[4];
+    for(int i=1;i<4;i++){
+        for(int j=0;j<4;j++){
+            temp[j] = estado[i][(j+i)%4];
+        }
+        for(int j=0;j<4;j++){
+            estado[i][j] = temp[j];
+        }
+    }
+}
+int main(){
+    unsigned char estado[4][4] = {
+        {0x31, 0x88, 0x31, 0xE0},
+        {0x43, 0x5A, 0x31, 0x37},
+        {0xF6, 0x30, 0x98, 0x07},
+        {0xA8, 0x8D, 0xA2, 0x34}
+    };
+    unsigned char key_init[4][4] = {
+        {0xFA,0x30,0xCC,0x01},
+        {0x3A,0xDC,0x6E,0xE5},
+        {0xE8,0xBC,0x0A,0xDA},
+        {0xBA,0x7F,0xEE,0x3B}
+    };
+    addRoundKey(estado, key_init);
+    subBytes(estado);
+    shiftRows(estado);
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            printf("%02X ", estado[i][j]);
         }
         printf("\n");
     }

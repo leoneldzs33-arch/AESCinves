@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
 unsigned char SBox[16][16] = {
     {0x63,0x7C,0x77,0x7B,0xF2,0x6B,0x6F,0xC5,0x30,0x01,0x67,0x2B,0xFE,0xD7,0xAB,0x76},
     {0xCA,0x82,0xC9,0x7D,0xFA,0x59,0x47,0xF0,0xAD,0xD4,0xA2,0xAF,0x9C,0xA4,0x72,0xC0},
@@ -44,11 +45,11 @@ void subBytes(unsigned char estado[4][4]) {
 }
 void shiftRows(unsigned char estado[4][4]) {
     unsigned char temp[4];
-    for(int i=1;i<4;i++){
-        for(int j=0;j<4;j++){
+    for(int i=1; i<4; i++){
+        for(int j=0; j<4; j++){
             temp[j] = estado[i][(j+i)%4];
         }
-        for(int j=0;j<4;j++){
+        for(int j=0; j<4; j++){
             estado[i][j] = temp[j];
         }
     }
@@ -67,8 +68,23 @@ int main(){
         {0xBA,0x7F,0xEE,0x3B}
     };
     addRoundKey(estado, key_init);
+    printf("AddRoundKey:\n");
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            printf("%02X ", estado[i][j]);
+        }
+        printf("\n");
+    }
     subBytes(estado);
+    printf("\nSubBytes:\n");
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            printf("%02X ", estado[i][j]);
+        }
+        printf("\n");
+    }
     shiftRows(estado);
+    printf("\nShiftRows:\n");
     for(int i=0;i<4;i++){
         for(int j=0;j<4;j++){
             printf("%02X ", estado[i][j]);

@@ -31,12 +31,4 @@ result4 = //operacion v * m
 unsigned char colu1 [4]= //columna 4
 //=
 unsigned char matriz_mix [4][4] = //resultado de la union de las 4 columnas resultantes
-
-
-mensaje_alex= creo que la estructura es correcta , 
-solo me falta ver como hacer en C vector * matriz y saber como uno la reduccion con esto 
-, los 8 bits resultantes del acomodo que son ? la matriz de estado que declaro al inicio, 
-la proveniente de shiftrows --> acomodo-->matriz de estado inicial de mixcolunms?"
-
-
 }
